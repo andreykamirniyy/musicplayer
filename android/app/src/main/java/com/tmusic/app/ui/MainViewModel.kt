@@ -13,6 +13,7 @@ enum class AudioQuality {
 }
 
 data class UiState(
+    val searchQuery: String = "",
     val selectedMood: String = "focus",
     val tracks: List<Track> = emptyList(),
     val waveTracks: List<Track> = emptyList(),
@@ -26,11 +27,20 @@ class MainViewModel : ViewModel() {
     private val _state = MutableStateFlow(UiState(tracks = repository.getTracks()))
     val state = _state.asStateFlow()
 
+    fun search(query: String) {
+        _state.update {
+            it.copy(
+                searchQuery = query,
+                tracks = repository.searchTracksOrAlbums(query),
+            )
+        }
+    }
+
     fun toggleFavorite(trackId: Int) {
         repository.toggleFavorite(trackId)
         _state.update {
             it.copy(
-                favorites = it.tracks.map { track -> track.id }.filter(repository::isFavorite).toSet(),
+                favorites = repository.getTracks().map { track -> track.id }.filter(repository::isFavorite).toSet(),
                 waveTracks = repository.generateWave(it.selectedMood),
             )
         }

@@ -11,6 +11,12 @@ MVP музыкального приложения для Android с режимо
 - `scripts/demo_backend.sh` — скрипт быстрой проверки API.
 - `docker-compose.yml` — запуск backend в контейнере.
 
+## Откуда берутся треки
+
+- В текущем MVP треки и метаданные хранятся в `backend/app/data.py` (демо-каталог).
+- В Android для демонстрации воспроизведения используются публичные demo-stream URL (`SoundHelix`).
+- Для production нужно подключать легальный каталог/лицензированный провайдер (правообладатели, CDN, DRM).
+
 ## Как увидеть, что проект рабочий
 
 ### Вариант A (рекомендуется): через Docker
@@ -30,6 +36,12 @@ docker compose up --build
 - список треков на `/tracks`
 - `{"result":"added"}` после добавления в избранное
 - JSON с `recommendations` на `/wave/demo?mood=focus`
+
+Проверка поиска (трек/альбом):
+
+```bash
+curl 'http://127.0.0.1:8000/search?query=Morning'
+```
 
 Остановить:
 
@@ -60,13 +72,13 @@ uvicorn app.main:app --reload --port 8000
 3. Запустить на эмуляторе/устройстве (minSdk 26).
 4. Проверить сценарий:
    - открыть приложение;
+   - использовать строку `Поиск трека / альбома`;
    - поставить несколько треков в Избранное (кнопка `☆/★`);
    - выбрать mood (`focus`, `happy`, `calm`, `energetic`, `sad`);
    - убедиться, что секция "Т-Волна" меняется;
    - нажать `Play` и увидеть "Сейчас играет".
 
 > В текущем MVP Android-клиент использует локальный репозиторий демо-данных для оффлайн-проверки UX. Следующий шаг — подключить Repository к FastAPI через Retrofit.
-
 
 ## Воспроизведение и качество звука
 
@@ -86,6 +98,7 @@ uvicorn app.main:app --reload --port 8000
 
 - `GET /health`
 - `GET /tracks`
+- `GET /search?query=<text>` (поиск по `title`, `album`, `artist`)
 - `GET /favorites/{user_id}`
 - `POST /favorites/{user_id}`
 - `POST /feedback/{user_id}`

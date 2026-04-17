@@ -8,6 +8,7 @@ class TMusicRepository {
             1,
             "Night Drive",
             "Polar Lights",
+            "City Lights",
             "synthwave",
             "focus",
             0.62,
@@ -19,6 +20,7 @@ class TMusicRepository {
             2,
             "Sunrise Pulse",
             "Neon District",
+            "Morning Neon",
             "pop",
             "happy",
             0.78,
@@ -30,6 +32,7 @@ class TMusicRepository {
             3,
             "Soft Rain",
             "Cloud Harbor",
+            "Window Mood",
             "lofi",
             "calm",
             0.32,
@@ -41,6 +44,7 @@ class TMusicRepository {
             4,
             "City Run",
             "Nova Run",
+            "Street Motion",
             "electronic",
             "energetic",
             0.88,
@@ -52,6 +56,7 @@ class TMusicRepository {
             5,
             "Deep Letters",
             "Velvet Lane",
+            "Paper Hearts",
             "indie",
             "sad",
             0.40,
@@ -64,6 +69,16 @@ class TMusicRepository {
     private val favorites = mutableSetOf<Int>()
 
     fun getTracks(): List<Track> = demoTracks
+
+    fun searchTracksOrAlbums(query: String): List<Track> {
+        val normalized = query.trim().lowercase()
+        if (normalized.isBlank()) return demoTracks
+        return demoTracks.filter {
+            it.title.lowercase().contains(normalized) ||
+                it.album.lowercase().contains(normalized) ||
+                it.artist.lowercase().contains(normalized)
+        }
+    }
 
     fun toggleFavorite(trackId: Int) {
         if (!favorites.add(trackId)) {

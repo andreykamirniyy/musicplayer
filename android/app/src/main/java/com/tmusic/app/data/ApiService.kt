@@ -14,6 +14,9 @@ interface ApiService {
     @GET("tracks")
     suspend fun getTracks(): List<Track>
 
+    @GET("search")
+    suspend fun searchTracksOrAlbums(@Query("query") query: String): List<Track>
+
     @POST("favorites/{userId}")
     suspend fun addFavorite(
         @Path("userId") userId: String,

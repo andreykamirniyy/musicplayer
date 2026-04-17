@@ -20,6 +20,18 @@ def list_tracks() -> list[Track]:
     return TRACKS
 
 
+@app.get("/search", response_model=list[Track])
+def search_tracks(query: str) -> list[Track]:
+    normalized = query.strip().lower()
+    if not normalized:
+        return []
+    return [
+        track
+        for track in TRACKS
+        if normalized in track.title.lower() or normalized in track.album.lower() or normalized in track.artist.lower()
+    ]
+
+
 @app.get("/favorites/{user_id}", response_model=list[Track])
 def get_favorites(user_id: str) -> list[Track]:
     ids = favorites_by_user.get(user_id, set())

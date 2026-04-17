@@ -15,6 +15,7 @@ import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -66,6 +67,14 @@ private fun TMusicApp(
             Text("Т-Музыка MVP", style = MaterialTheme.typography.headlineSmall)
             Text("Т-Волна по избранному и настроению")
 
+            OutlinedTextField(
+                value = state.searchQuery,
+                onValueChange = vm::search,
+                modifier = Modifier.fillMaxWidth(),
+                label = { Text("Поиск трека / альбома") },
+                singleLine = true,
+            )
+
             AudioQualitySettings(
                 selected = state.audioQuality,
                 onSelectQuality = vm::setAudioQuality,
@@ -104,6 +113,7 @@ private fun TMusicApp(
                     Column(modifier = Modifier.padding(12.dp)) {
                         Text("Сейчас играет")
                         Text("${now.title} — ${now.artist}")
+                        Text("Альбом: ${now.album}")
                         Text(
                             if (state.audioQuality == AudioQuality.HIGH) {
                                 "Качество: Наилучшее (высокое)"
@@ -160,6 +170,7 @@ private fun TrackList(
                 ) {
                     Column(modifier = Modifier.weight(1f)) {
                         Text("${track.title} — ${track.artist}")
+                        Text("Альбом: ${track.album}")
                         Text("${track.genre} · ${track.mood}")
                     }
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {

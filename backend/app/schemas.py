@@ -5,6 +5,7 @@ class Track(BaseModel):
     id: int
     title: str
     artist: str
+    album: str
     genre: str
     mood: str
     energy: float
