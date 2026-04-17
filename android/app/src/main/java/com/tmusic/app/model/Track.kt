@@ -7,7 +7,9 @@ data class Track(
     val genre: String,
     val mood: String,
     val energy: Double,
-    val bpm: Int
+    val bpm: Int,
+    val streamUrlHigh: String,
+    val streamUrlLow: String,
 )
 
 data class WaveResponse(

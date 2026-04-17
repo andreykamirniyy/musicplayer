@@ -7,12 +7,18 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
+enum class AudioQuality {
+    HIGH,
+    LOW,
+}
+
 data class UiState(
     val selectedMood: String = "focus",
     val tracks: List<Track> = emptyList(),
     val waveTracks: List<Track> = emptyList(),
     val nowPlaying: Track? = null,
     val favorites: Set<Int> = emptySet(),
+    val audioQuality: AudioQuality = AudioQuality.HIGH,
 )
 
 class MainViewModel : ViewModel() {
@@ -37,6 +43,10 @@ class MainViewModel : ViewModel() {
                 waveTracks = repository.generateWave(mood),
             )
         }
+    }
+
+    fun setAudioQuality(quality: AudioQuality) {
+        _state.update { it.copy(audioQuality = quality) }
     }
 
     fun play(track: Track) {
