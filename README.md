@@ -103,3 +103,15 @@ uvicorn app.main:app --reload --port 8000
 - `POST /favorites/{user_id}`
 - `POST /feedback/{user_id}`
 - `GET /wave/{user_id}?mood=focus&limit=10`
+
+
+## Troubleshooting Android Studio
+
+Если видишь ошибку **"The output path is not specified for module musicplayer-codex"**:
+
+1. Закрой проект.
+2. Открой **корень репозитория** (`musicplayer`) как Gradle-проект (теперь есть root `settings.gradle.kts`).
+3. Дождись Gradle Sync.
+4. Если ошибка осталась: `File -> Invalidate Caches / Restart` и снова Sync.
+
+Причина: IDE открывала папку как обычный IntelliJ-модуль без корректной Gradle-импортируемой структуры.
