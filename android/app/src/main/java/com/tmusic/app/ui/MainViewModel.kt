@@ -12,14 +12,22 @@ enum class AudioQuality {
     LOW,
 }
 
+enum class PlayerMode {
+    MINI,
+    FULL,
+}
+
 data class UiState(
     val searchQuery: String = "",
     val selectedMood: String = "focus",
     val tracks: List<Track> = emptyList(),
+    val localTracks: List<Track> = emptyList(),
     val waveTracks: List<Track> = emptyList(),
     val nowPlaying: Track? = null,
     val favorites: Set<Int> = emptySet(),
     val audioQuality: AudioQuality = AudioQuality.HIGH,
+    val playerMode: PlayerMode = PlayerMode.FULL,
+    val serverConnected: Boolean = true,
 )
 
 class MainViewModel : ViewModel() {
@@ -34,6 +42,10 @@ class MainViewModel : ViewModel() {
                 tracks = repository.searchTracksOrAlbums(query),
             )
         }
+    }
+
+    fun setLocalTracks(tracks: List<Track>) {
+        _state.update { it.copy(localTracks = tracks) }
     }
 
     fun toggleFavorite(trackId: Int) {
@@ -57,6 +69,10 @@ class MainViewModel : ViewModel() {
 
     fun setAudioQuality(quality: AudioQuality) {
         _state.update { it.copy(audioQuality = quality) }
+    }
+
+    fun setPlayerMode(mode: PlayerMode) {
+        _state.update { it.copy(playerMode = mode) }
     }
 
     fun play(track: Track) {
